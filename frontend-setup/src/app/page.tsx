@@ -1,6 +1,6 @@
 "use client";
 import { Inter } from "@next/font/google";
-import styles from "./page.module.css";
+import "./globals.css";
 import { useState, useEffect } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -27,10 +27,12 @@ export default function Home(props: any) {
   type factObj = { _id: string; text: string };
 
   return (
-    <main className={styles.main}>
+    <main className="main">
       <p>{result}</p>
       {catFacts ? catFacts.map((fact: factObj) => <p key={fact._id}>{fact.text}</p>) : null}
-      <button onClick={() => getCatFacts()}>Load cats facts for the day</button>
+      <button className="p-4 border-2 bg-transparent border-white rounded-md hover:bg-pink-800 transition-all" onClick={() => getCatFacts()}>
+        Load cats facts for the day
+      </button>
     </main>
   );
 }
