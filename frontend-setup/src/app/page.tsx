@@ -7,6 +7,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function Home(props: any) {
   const [result, setResult] = useState("");
+  const [catFacts, setCatFacts] = useState([]);
   useEffect(() => {
     fetch("http://localhost:3001")
       .then((res) => res.text())
@@ -15,5 +16,21 @@ export default function Home(props: any) {
       });
   }, []);
 
-  return <main className={styles.main}>{result}</main>;
+  const getCatFacts = () => {
+    fetch("http://localhost:3001/catsfacts/catfact")
+      .then((res) => res.json())
+      .then((data) => {
+        setCatFacts(data);
+      });
+  };
+  console.log(catFacts);
+  type factObj = { _id: string; text: string };
+
+  return (
+    <main className={styles.main}>
+      <p>{result}</p>
+      {catFacts ? catFacts.map((fact: factObj) => <p key={fact._id}>{fact.text}</p>) : null}
+      <button onClick={() => getCatFacts()}>Load cats facts for the day</button>
+    </main>
+  );
 }
