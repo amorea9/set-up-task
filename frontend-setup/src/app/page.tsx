@@ -42,10 +42,15 @@ export default function Home(props: any) {
       });
       const data = await response.json();
       console.log(data);
+      fetch("http://localhost:3001/users/")
+        .then((response) => response.json())
+        .then((response) => console.log(response))
+        .catch((err) => console.error(err));
     } catch (error) {
       console.error(error);
     }
   }
+
   return (
     <main className="main">
       <p>{result}</p>
