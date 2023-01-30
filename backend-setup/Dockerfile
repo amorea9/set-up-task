@@ -11,5 +11,5 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install --omit=dev
 COPY --from=development /backend-setup/dist/ ./dist/
-EXPOSE 3001
+EXPOSE 3002
 CMD ["node", "dist/main"]
