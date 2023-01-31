@@ -6,6 +6,7 @@ COPY tsconfig*.json ./
 RUN npm ci
 COPY src/ src/
 RUN npm run build
+
 FROM node:19-alpine As production
 WORKDIR /app
 COPY package*.json ./
