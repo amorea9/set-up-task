@@ -13,16 +13,16 @@ export class User {
   })
   username: string;
 
-  // @Column({
-  //   name: 'email_address',
-  //   nullable: false,
-  //   default: '',
-  // })
-  // email: string;
+  @Column({
+    name: 'email_address',
+    nullable: false,
+    default: '',
+  })
+  email: string;
 
-  // @Column({
-  //   nullable: false,
-  //   default: '',
-  // })
-  // password: string;
+  @Column({
+    nullable: false,
+    default: '',
+  })
+  password: string;
 }

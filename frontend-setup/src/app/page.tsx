@@ -1,15 +1,17 @@
 "use client";
 import { Inter } from "@next/font/google";
 import "./globals.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home(props: any) {
   const [result, setResult] = useState("");
   const [catFacts, setCatFacts] = useState([]);
-  const [name, setName] = useState("");
+  const [payload, setPayload] = useState({ username: "", password: "", email: "default@mail.com" } as payloadObj);
   type factObj = { _id: string; text: string };
+  type payloadObj = { username: string; password: string; email: string };
+  const theForm = useRef<any>(null);
   useEffect(() => {
     fetch("http://localhost:3001")
       .then((res) => res.text())
@@ -26,10 +28,10 @@ export default function Home(props: any) {
       });
   };
 
-  function handleName(e: React.ChangeEvent<HTMLInputElement>) {
-    let username = e.target.value;
-    setName(username);
-    console.log(username);
+  function handleEntry(e: React.FormEvent<HTMLInputElement>) {
+    // let username = e.target.value;
+    setPayload({ ...payload, username: theForm.current.elements.username.value, password: theForm.current.elements.password.value } as payloadObj);
+    console.log(payload);
   }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -37,7 +39,7 @@ export default function Home(props: any) {
     try {
       const response = await fetch("http://localhost:3001/users/create", {
         method: "POST",
-        body: JSON.stringify({ username: name, password: "default122", email: "default@mail.com" }),
+        body: JSON.stringify(payload),
         headers: { "Content-Type": "application/json" },
       });
       const data = await response.json();
@@ -56,10 +58,14 @@ export default function Home(props: any) {
       <p>{result}</p>
       {catFacts ? catFacts.map((fact: factObj) => <p key={fact._id}>{fact.text}</p>) : null}
 
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="name">
-          Name
-          <input type="text" placeholder="Enter your name" onChange={(e) => handleName(e)} />
+      <form onSubmit={handleSubmit} ref={theForm}>
+        <label htmlFor="username">
+          Username
+          <input id="username" name="username" type="text" placeholder="Enter your username" onChange={(e) => handleEntry(e)} />
+        </label>
+        <label htmlFor="password">
+          Password
+          <input id="password" name="password" type="text" placeholder="Enter your password" onChange={(e) => handleEntry(e)} />
         </label>
         <button type="submit">Submit</button>
       </form>
